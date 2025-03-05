@@ -1,8 +1,10 @@
 const mongoose = require("mongoose");
+const config = require("config");
+const dbgr = require("debug")("development:mongoose-connection");
 
 mongoose
-.connect("mongodb+srv://callmesahu:12ab89yz@cluster0.uqntv2j.mongodb.net/pack-store")
-.then(() => console.log("Database connected"))
-.catch((err) => console.log(err));
+.connect(`${config.get("MONGODB_URI")}/pack-store`)
+.then(() => dbgr("Database connected"))
+.catch((err) => dbgr(err));
 
 module.exports = mongoose.connection
