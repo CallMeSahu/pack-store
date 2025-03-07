@@ -10,3 +10,5 @@ router.get("/", (req, res) => {
 router.get("/shop", isLoggedIn, (req, res) => {
     res.render("shop");
 })
+
+module.exports = router;
