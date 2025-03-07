@@ -1,0 +1,71 @@
+<%- include("./partials/header") %>
+
+<% if(error.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %>
+
+<% if(success.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-10 py-20 overflow-hidden">
+    <div class="w-1/4 h-screen">
+        <div class="mt-10">
+            <a class="block w-fit mb-2 text-xl" href="">All Products</a>
+            <a class="block w-fit mb-2 text-xl" href="">Create New Product</a>
+        </div>
+    </div>
+    <main class="w-3/4 h-screen">
+        <h2 class="text-3xl mb-5">Create New Product</h2>
+        <form action="/products/create" method="post" autocomplete="off" enctype="multipart/form-data">
+            <div class="mb-6">
+                <h3 class="text-xl mb-3">Product Details</h3>
+                <div class="mb-4 flex items-center">
+                    <label class="block mb-2 ">Product Image:</label>
+                    <input name="image" type="file" class=" px-4 rounded" value="Select File">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="name" type="text" placeholder="Product Name" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="price" type="number" placeholder="Product Price" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="discount" type="number" placeholder="Product Discount" >
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl mb-3">Panel Details</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="bgcolor" type="text" placeholder="Background Color" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="panelcolor" type="text" placeholder="Panel Color" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="textcolor" type="text" placeholder="Text Color" >
+                </div>
+            </div>
+
+            <input 
+                class="px-5 py-3 rounded-md bg-blue-500 text-white cursor-pointer"
+                type="submit" value="Create New Product">
+        </form>
+
+    </main>
+</div>
+
+<%- include("./partials/footer") %>

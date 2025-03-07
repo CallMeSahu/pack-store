@@ -25,7 +25,7 @@ app.use(expressSession({
 }));
 app.use(flash());
 
-app.use("/owner", ownerRouter);
+app.use("/owners", ownerRouter);
 app.use("/users", userRouter);
 app.use("/products", productRouter);
 app.use("/", indexRouter);
