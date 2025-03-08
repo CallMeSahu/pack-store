@@ -23,119 +23,24 @@
         </div>
         <div class="w-3/4 h-screen overflow-y-auto scrollbar-none">
             <div class="flex items-start gap-5 flex-wrap">
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
+                <% products.forEach(product => { %>
+                    <div class="w-60">
+                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                            <img 
+                                class="w-auto h-[75%] object-contain"
+                                src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
                         </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
+                        <div class="p-4 flex justify-between items-center bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+                            <div>
+                                <h3 class="font-semibold"><%= product.name %></h3>
+                                <h4 class="font-normal">₹<%= product.price %></h4>
+                            </div>
+                            <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
+                                <i class="ri-add-line text-black"></i>
+                            </a>
                         </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
                     </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="w-60">
-                    <div class="w-full h-52 flex items-center justify-center bg-orange-500">
-                        <img class="h-[12rem]" src="https://www.khadims.com/30700276190" alt="">
-                    </div>
-                    <div class="p-4 flex justify-between items-center bg-orange-800 text-white">
-                        <div>
-                            <h3>Clinge Bage</h3>
-                            <h4>₹ 1000</h4>
-                        </div>
-                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="">
-                            <i class="ri-add-line text-black"></i>
-                        </a>
-                    </div>
-                </div>
-                
+                <% }) %>                
             </div>
         </div>
     </div>
