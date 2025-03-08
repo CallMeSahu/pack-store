@@ -111,9 +111,4 @@ const loginUser = async (req, res) => {
     }
 }
 
-const logoutUser = (req, res) => {
-    res.clearCookie("token");
-    res.redirect("/");
-}
-
-module.exports = { createOwner, registerUser, loginUser, logoutUser };
+module.exports = { createOwner, registerUser, loginUser };
