@@ -11,7 +11,7 @@ const userSchema = new mongoose.Schema({
     cart: [
         {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "products"
+            ref: "product"
         }
     ],
     orders: {

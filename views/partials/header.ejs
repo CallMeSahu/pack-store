@@ -15,9 +15,9 @@
         <% var isLoggedIn = typeof isLoggedIn !== "undefined" ? isLoggedIn : true %>
         <% if(isLoggedIn) { %>
             <div class="flex gap-4 items-center">
-                <a href="">Shop</a>
-                <a href="">Cart</a>
-                <a href="">My Account</a>
+                <a href="/shop">Shop</a>
+                <a href="/cart">Cart</a>
+                <a href="/profile">My Account</a>
                 <a class="text-red-500" href="/logout">Logout</a>
             </div>
         <% } %>       
