@@ -16,9 +16,9 @@
 %>
 
 <div class="w-full h-screen flex items-start px-10 py-20 overflow-hidden">
-    <div class="w-3/4 h-screen overflow-y-auto scrollbar-none">
-        <div class="flex items-start gap-5 flex-wrap">
-            <% if(cartItems.length > 0){ %>
+    <% if(cartItems.length > 0){ %>
+        <div class="w-3/4 h-screen overflow-y-auto scrollbar-none">
+            <div class="flex items-start gap-5 flex-wrap">            
                 <% cartItems.forEach(item => { 
                     let discountedPrice = item.price - (item.discount || 0);
                     totalPrice += item.price;
@@ -40,50 +40,48 @@
                             </a>
                         </div>
                     </div>
-                <% }) %>  
-            <% } else{ %>
-                <h3 class="w-full text-center text-2xl">No Items in Cart!</h3>
-            <% } %>              
-        </div>
-    </div>
-
-    <% 
-        let totalAmount = totalPrice - totalDiscount + platformFee + shippingFee;
-    %>
-    <div class="w-1/4 h-screen">
-        <h3 class="text-2xl">Price Breakdown</h3>
-        <div class="mt-5">
-            <div class="flex justify-between mt-2">
-                <h4 class="w-1/3">Total Price</h4>
-                <h4>₹ <%= totalPrice %> </h4>
-            </div>
-            <div class="flex justify-between mt-2">
-                <h4 class="w-1/3">Total Discount</h4>
-                <h4>- ₹ <%= totalDiscount %> </h4>
-            </div>
-            <div class="flex justify-between mt-2">
-                <h4 class="w-1/3">Platform Fee</h4>
-                <h4>₹ <%= platformFee %> </h4>
-            </div>
-            <div class="flex justify-between mt-2">
-                <h4 class="w-1/3">Shipping Fee</h4>
-                <h4><%= shippingFee === 0 ? "FREE" : "₹ " + shippingFee %> </h4>
+                <% }) %>                          
             </div>
         </div>
-        <div class="w-full h-[1px] bg-black mt-10"></div>
-        <div class="flex justify-between mt-5 mb-5">
-            <h3 class="w-1/3 text-xl">Total Amount</h3>
-            <h3 class="font-semibold text-xl text-green-600">₹ <%= totalAmount %> </h3>
+        <% const totalAmount = totalPrice - totalDiscount + platformFee + shippingFee; %>
+        <div class="w-1/4 h-screen">
+            <h3 class="text-2xl">Price Breakdown</h3>
+            <div class="mt-5">
+                <div class="flex justify-between mt-2">
+                    <h4 class="w-1/3">Total Price</h4>
+                    <h4>₹ <%= totalPrice %> </h4>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <h4 class="w-1/3">Total Discount</h4>
+                    <h4>- ₹ <%= totalDiscount %> </h4>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <h4 class="w-1/3">Platform Fee</h4>
+                    <h4>₹ <%= platformFee %> </h4>
+                </div>
+                <div class="flex justify-between mt-2">
+                    <h4 class="w-1/3">Shipping Fee</h4>
+                    <h4><%= shippingFee === 0 ? "FREE" : "₹ " + shippingFee %> </h4>
+                </div>
+            </div>
+            <div class="w-full h-[1px] bg-black mt-10"></div>
+            <div class="flex justify-between mt-5 mb-5">
+                <h3 class="w-1/3 text-xl">Total Amount</h3>
+                <h3 class="font-semibold text-xl text-green-600">₹ <%= totalAmount %> </h3>
+            </div>
+            <form action="/" method="post" autocomplete="off">
+                <input 
+                    class="hidden" 
+                    type="number" name="totalAmount" value="<%= totalAmount%>" >
+                <input 
+                    class="w-full px-5 py-3 mt-2 rounded-full bg-blue-500 text-white cursor-pointer"
+                    type="submit" value="Place My Order">
+            </form>
         </div>
-        <form action="/" method="post" autocomplete="off">
-            <input 
-                class="hidden" 
-                type="number" name="totalAmount" value="<%= totalAmount%>" >
-            <input 
-                class="w-full px-5 py-3 mt-2 rounded-full bg-blue-500 text-white cursor-pointer"
-                type="submit" value="Place My Order">
-        </form>
-    </div>
+    <% } else{ %>
+        <h3 class="w-full text-center text-2xl mt-10">No Items in Cart!</h3>
+    <% } %>
+    
 </div>
     
 <%- include('./partials/footer') %>
