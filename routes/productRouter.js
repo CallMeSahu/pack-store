@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const upload = require("../config/multer-config");
 const zod = require("zod");
+const isOwner = require("../middlewares/isOwner");
 const productModel = require("../models/product-model");
 
 router.get("/", (req, res) => {
@@ -48,7 +49,7 @@ router.post("/create", upload.single("image"), async (req, res) => {
 
         if(createdProduct){
             req.flash("success", "Product created!");
-            res.redirect("/owners/admin");
+            res.redirect("/owners/products");
         }
 
     } catch (error) {
@@ -56,6 +57,15 @@ router.post("/create", upload.single("image"), async (req, res) => {
     }
 });
 
-
+router.get("/removeproduct/:productid", isOwner, async(req, res) => {
+    try {
+       const productid = req.params.productid;
+       await productModel.findByIdAndDelete(productid); 
+       req.flash("warning", "Product deleted");
+       res.redirect("/owners/products");
+    } catch (error) {
+        res.send(error.message);
+    }
+});
 
 module.exports = router;

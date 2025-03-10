@@ -4,6 +4,7 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const productModel = require('../models/product-model');
 const userModel = require('../models/user-model');
 const { default: mongoose } = require('mongoose');
+const isOwner = require('../middlewares/isOwner');
 
 router.get("/", (req, res) => {
     const error = req.flash("error");

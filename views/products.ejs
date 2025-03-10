@@ -1,0 +1,50 @@
+<%- include("./partials/header") %>
+
+<% if(warning.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-yellow-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= warning %>
+        </span>
+    </div>
+<% } %>
+
+<% if(success.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-10 py-20">
+    <div class="w-1/4 h-screen">
+        <div class="mt-10">
+            <a class="block w-fit mb-2 text-xl" href="/owners/admin">Create New Product</a>
+            <a class="block w-fit mb-2 text-xl" href="/owners/products">All Products</a>            
+        </div>
+    </div>
+    <div class="w-3/4 h-screen overflow-y-auto scrollbar-none">
+        <div class="flex items-start gap-5 flex-wrap">
+            <% products.forEach(product => { %>
+                <div class="w-60">
+                    <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                        <img 
+                            class="w-auto h-[75%] object-contain"
+                            src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+                    </div>
+                    <div class="p-4 flex justify-between items-center bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+                        <div>
+                            <h3 class="font-semibold"><%= product.name %></h3>
+                            <h4 class="font-normal">₹<%= product.price %></h4>
+                        </div>
+                        <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="/products/removeproduct/<%= product._id %>">
+                            <i class="ri-delete-bin-line text-black"></i>   
+                        </a>
+                    </div>
+                </div>
+            <% }) %>                
+        </div>
+    </div>
+</div>
+
+<%- include("./partials/footer") %>
