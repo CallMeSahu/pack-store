@@ -90,22 +90,39 @@ const loginUser = async (req, res) => {
         }
 
         const { email, password } = req.body;
-        const existingUser = await userModel.findOne({ loginUser });
-        if(!existingUser){
-            req.flash("error", "Invalid Credentials");
+        const existingUser = await userModel.findOne({ email });
+        const existingOwner = await ownerModel.findOne({ email })
+        if(!existingUser && !existingOwner){
+            req.flash("error", "Account Does not exist");
             return res.redirect("/");
         }
 
-        bcrypt.compare(password, existingUser.password, (err, result) => {
-            if(result){
-                const token = generateToken({ email, userid: existingUser._id });
-                res.cookie("token", token);
-                res.redirect("/shop");
-            }else{
-                req.flash("error", "Invalid Credentials");
-                return res.redirect("/");
-            }
-        })
+        if(existingUser){
+            bcrypt.compare(password, existingUser.password, (err, result) => {
+                if(result){
+                    const token = generateToken({ email, userid: existingUser._id });
+                    res.cookie("token", token);
+                    res.redirect("/shop");
+                }else{
+                    req.flash("error", "Invalid Credentials");
+                    return res.redirect("/");
+                }
+            })
+        } 
+        
+        if(existingOwner) {
+            bcrypt.compare(password, existingOwner.password, (err, result) => {
+                if(result){
+                    const token = generateToken({ email, userid: existingOwner._id });
+                    res.cookie("token", token);
+                    res.redirect("/owners/admin");
+                }else{
+                    req.flash("error", "Invalid Credentials");
+                    return res.redirect("/");
+                }
+            })
+        }
+
     } catch (error) {
         res.send(error.message);
     }

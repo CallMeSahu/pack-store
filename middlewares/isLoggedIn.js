@@ -10,7 +10,7 @@ const isLoggedIn = async (req, res, next) => {  // Add async here
     try {
         const decoded = jwt.verify(req.cookies.token, process.env.JWT_SECRET);
         
-        const user = await userModel.findOne({ email: decoded.email }).select("-password"); // Await the DB call
+        const user = await userModel.findOne({ email: decoded.email }).select("-password"); 
         
         if (!user) {
             req.flash("error", "User not found");
