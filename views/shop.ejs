@@ -50,6 +50,12 @@
                                 <h3 class="font-semibold"><%= product.name %></h3>
                                 <h4 class="font-normal">₹<%= product.price %></h4>
                             </div>
+                            <% if(product.discount > 0){ %>
+                                <% let totalDiscount = ((product.price - product.discount)/product.price) * 100 %>
+                                <div class=" px-2 py-1 rounded-full bg-[<%= product.bgcolor %>]">
+                                    -<%= totalDiscount  %>%
+                                </div>
+                            <% } %>
                             <a class="w-7 h-7 flex justify-center items-center rounded-full bg-white" href="/addtocart/<%= product._id %>">
                                 <i class="ri-add-line text-black"></i>
                             </a>
