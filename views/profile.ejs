@@ -1,0 +1,78 @@
+<%- include("./partials/header") %>
+
+<% if(error.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %>
+
+<% if(success.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-10 py-20 overflow-hidden">
+    <div class="w-1/4 h-screen">
+        <div class="mt-10">
+            <a class="block w-fit mb-2 text-xl" href="">My Profile</a>
+            <a class="block w-fit mb-2 text-xl" href="">My Address</a>            
+            <a class="block w-fit mb-2 text-xl" href="">My Orders</a>            
+        </div>
+    </div>
+    <main class="w-3/4 h-screen">
+        <h2 class="text-3xl mb-5">My Profile</h2>
+        <form action="/users/update" method="post" autocomplete="off" enctype="multipart/form-data">
+            <div class="mb-6">
+                <div class="flex items-center gap-3 mb-3">
+                    <% if(user.picture){ %>
+                        <div class="w-24 h-24 flex justify-center items-center rounded-full border-4 border-blue-500 overflow-hidden">
+                            <img 
+                                class="w-full h-auto object-cover" 
+                                src="data:image/jpeg;base64,<%= user.picture.toString('base64') %>" alt="">
+                        </div>
+                    <% } %>
+                    <h3 class="text-2xl">Hey <%= user.fullname.split(" ")[0] %>!</h3>
+                </div>                
+                <div class="mb-4 flex items-center">
+                    <label class="block mb-2">Change Picture:</label>
+                    <input name="picture" type="file" class="px-4 rounded" value="Select File">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="fullname" type="text" placeholder="Full Name" value="<%= user.fullname %>">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="email" type="email" placeholder="E-mail" value="<%= user.email %>" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="contact" type="text" placeholder="Mobile No."  value="<%= user.contact %>">
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg mb-3">Change Password</h3>
+                <div class="grid gap-4">
+                    <input 
+                        class="bg-zinc-100 block w-1/2 px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="newpassword" type="password" placeholder="New Password">
+                    <input 
+                        class="bg-zinc-100 block w-1/2 px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="confirmpassword" type="password" placeholder="Confirm Password">
+                </div>
+            </div>
+
+            <input 
+                class="px-5 py-3 rounded-md bg-blue-500 text-white cursor-pointer"
+                type="submit" value="Update Profile">
+        </form>
+
+    </main>
+</div>
+
+<%- include("./partials/footer") %>
