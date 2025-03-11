@@ -1,0 +1,59 @@
+<%- include("./partials/header") %>
+
+<% if(error.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %>
+
+<% if(success.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-10 py-20 overflow-hidden">
+    <div class="w-1/4 h-screen">
+        <div class="mt-10">
+            <a class="block w-fit mb-2 text-xl" href="/profile">My Profile</a>
+            <a class="block w-fit mb-2 text-xl" href="/address">My Address</a>            
+            <a class="block w-fit mb-2 text-xl" href="/orders">My Orders</a>            
+        </div>
+    </div>
+    <main class="w-3/4 h-screen">
+        <h2 class="text-3xl mb-5">My Address</h2>
+        <form action="/users/update/address" method="post" autocomplete="off">
+            <div class="mb-6">
+                <div class="grid gap-2 mb-2">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="addressLine1" type="text" placeholder="Address Line 1" value="<%= address.addressLine1 %>">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="addressLine2" type="text" placeholder="Address Line 2" value="<%= address.addressLine2 %>">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="city" type="text" placeholder="City" value="<%= address.city %>">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="state" type="text" placeholder="State" value="<%= address.state %>">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="pincode" type="text" placeholder="Pincode"  value="<%= address.pincode %>">
+                </div>
+            </div>
+            <input 
+                class="px-5 py-3 rounded-md bg-blue-500 text-white cursor-pointer"
+                type="submit" value="Update Address">
+        </form>
+
+    </main>
+</div>
+
+<%- include("./partials/footer") %>

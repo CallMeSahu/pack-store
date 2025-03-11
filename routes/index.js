@@ -73,7 +73,27 @@ router.get("/profile", isLoggedIn, async(req, res) => {
     } catch (error) {
          res.send(error.message); 
     }
-})
+});
+
+router.get("/address", isLoggedIn, async(req, res) => {
+    try {
+        const user = await userModel.findOne({ email: req.user.email });
+        if(!user){
+            req.flash("error", "User not found");
+            res.redirect("/");
+        }
+        
+        const success = req.flash("success");
+        const error = req.flash("error");
+        res.render("address", { address: user.address, success, error});
+    } catch (error) {
+        res.send(error.message);
+    }
+});
+
+router.get("/orders", isLoggedIn, async(req, res) => {
+    res.send("Orders");
+});
 
 router.get("/logout", (req, res) => {
     res.clearCookie("token");
