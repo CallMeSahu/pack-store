@@ -4,6 +4,7 @@ const upload = require("../config/multer-config");
 const zod = require("zod");
 const isOwner = require("../middlewares/isOwner");
 const productModel = require("../models/product-model");
+const { findByIdAndUpdate } = require("../models/owner-model");
 
 router.get("/", (req, res) => {
   res.send("Hey from Product!");
@@ -67,5 +68,52 @@ router.get("/removeproduct/:productid", isOwner, async(req, res) => {
         res.send(error.message);
     }
 });
+
+router.get("/edit/:productid", isOwner, async(req, res) => {
+    try {
+        const success = req.flash("success");
+        const error = req.flash("error");
+        const productid = req.params.productid;
+        const product = await productModel.findById(productid);
+        res.render("editproducts", { product, success, error });
+    } catch (error) {
+        res.send(error.message);
+    }
+});
+
+router.post("/edit/:productid", isOwner, upload.single('image'), async(req, res) => {
+    try {
+        const productid = req.params.productid;
+        const product = await productModel.findById(productid);
+
+        const image = req.file ? req.file.buffer : product.image;
+        const { name, price, discount, bgcolor, panelcolor, textcolor } = req.body;
+
+        const validate = productSchema.safeParse({
+            name,
+            price: Number(price),
+            discount: discount ? Number(discount) : 0,
+            bgcolor,
+            panelcolor,
+            textcolor,
+        });
+
+        if (!validate.success || !image) {
+            req.flash("error", "Invalid inputs");
+            return res.redirect("/owners/admin");
+        }
+
+        const updatedProduct = await productModel.findByIdAndUpdate(productid, {
+            name, price, discount, bgcolor, panelcolor, textcolor, image
+        })
+
+        if(updatedProduct){
+            req.flash("success", "Product Updated!");
+            res.redirect("/owners/products");
+        }
+    } catch (error) {
+       res.send(error.message); 
+    }
+})
 
 module.exports = router;

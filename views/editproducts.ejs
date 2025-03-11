@@ -1,0 +1,96 @@
+<%- include("./partials/header") %>
+
+<% if(error.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %>
+
+<% if(success.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-green-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= success %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start px-10 py-20">
+    <div class="w-1/4 h-screen">
+        <div class="mt-10">
+            <a class="block w-fit mb-2 text-xl" href="/owners/admin">Create New Product</a>
+            <a class="block w-fit mb-2 text-xl" href="/owners/products">All Products</a>            
+        </div>
+    </div>
+    <main class="w-3/4 h-screen">
+        <h2 class="text-3xl mb-4">Edit Product</h2>
+        <form action="/products/edit/<%= product.id %>" method="post" autocomplete="off" enctype="multipart/form-data">
+            <div class="mb-6 flex gap-2">
+                <div class="w-1/2">
+                    <h3 class="text-xl mb-3">Product Details</h3>
+                    <div class="mb-4 flex items-center">
+                        <label class="block mb-2 ">Change Product Image:</label>
+                        <input name="image" type="file" class=" px-4 rounded" value="Select File">
+                    </div>
+                    <div class="grid gap-4">
+                        <input 
+                            class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                            name="name" type="text" placeholder="Product Name" value="<%= product.name %>">
+                        <input 
+                            class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                            name="price" type="number" placeholder="Product Price" value="<%= product.price %>">
+                        <input 
+                            class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                            name="discount" type="number" placeholder="Product Discount" value="<%= product.discount %>" >
+                    </div>
+                </div>
+                <div class="w-1/2 flex justify-center">
+                    <div class="w-60">
+                        <div class="w-full h-52 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                            <img 
+                                class="w-auto h-[75%] object-contain"
+                                src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="">
+                        </div>
+                        <div class="p-4 flex justify-between items-center bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+                            <div>
+                                <h3 class="font-semibold"><%= product.name %></h3>
+                                <h4 class="font-normal">₹<%= product.price %></h4>
+                            </div>
+                            <% if(product.discount > 0){ %>
+                                <% let totalDiscount = ((product.price - product.discount)/product.price) * 100 %>
+                                <div class=" px-2 py-1 rounded-full bg-[<%= product.bgcolor %>]">
+                                    -<%= totalDiscount  %>%
+                                </div>
+                            <% } %>
+                            <div class="w-7 h-7 flex justify-center items-center rounded-full bg-white">
+                                <i class="ri-add-line text-black"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-xl mb-3">Panel Details</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="bgcolor" type="text" placeholder="Background Color" value="<%= product.bgcolor %>" >
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="panelcolor" type="text" placeholder="Panel Color" value="<%= product.panelcolor %>">
+                    <input 
+                        class="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200 outline-blue-400"
+                        name="textcolor" type="text" placeholder="Text Color" value="<%= product.textcolor %>">
+                </div>
+            </div>
+
+            <input 
+                class="px-5 py-3 rounded-md bg-blue-500 text-white cursor-pointer"
+                type="submit" value="Update Product">
+        </form>
+    </main>
+</div>
+
+<%- include("./partials/footer") %>
