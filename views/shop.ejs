@@ -14,27 +14,23 @@
             </span>
         </div>
     <% } %>
-    <div class="w-full h-screen flex items-start px-10 py-20 overflow-hidden">
+    <div class="w-full h-screen flex items-start px-10 py-20">
         <div class="w-1/4 h-screen">
             <div class="flex items-center gap-2 mt-5">
                 <h3 class="text-lg">sort by</h3>
-                <form action="/shop">
-                    <select class="px-2 py-1 border-[1px] outline-blue-400" name="sortby">
-                        <option value="newest">Newest</option>
-                        <option value="popular">Popular</option>
+                <form action="/shop" method="get">
+                    <select class="px-2 py-1 border-[1px] outline-blue-400" name="sortby" onchange="this.form.submit()">
+                        <option value="">Price</option>
+                        <option value="lowtohigh">Low to High</option>
+                        <option value="hightolow">High to Low</option>
                     </select>
                 </form>
             </div>
-            <div class="mt-20">
-                <a class="block w-fit mb-2 text-xl" href="">New Collection</a>
-                <a class="block w-fit mb-2 text-xl" href="">All Products</a>
-                <a class="block w-fit mb-2 text-xl" href="">Discounted Products</a>
-            </div>
-            <div class="mt-20">
-                <a class="block w-fit mb-2 text-xl" href="">Filter Products</a>
-                <a class="block w-fit mb-2 text-xl" href="">All Products</a>
-                <a class="block w-fit mb-2 text-xl" href="">Discounted Products</a>
-            </div>
+            <form action="/shop" class="mt-20" method="get">
+                <a class="block w-fit mb-2 text-xl" href="/shop">All Products</a>
+                <a class="block w-fit mb-2 text-xl" href="/shop?filter=newcollection">New Collection</a>
+                <a class="block w-fit mb-2 text-xl" href="/shop?filter=discounted">Discounted Products</a>
+            </form>
         </div>
         <div class="w-3/4 h-screen overflow-y-auto scrollbar-none">
             <div class="flex items-start gap-5 flex-wrap">

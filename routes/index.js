@@ -12,10 +12,28 @@ router.get("/", (req, res) => {
 });
 
 router.get("/shop", isLoggedIn, async(req, res) => {
-    const products = await productModel.find();
-    const success = req.flash("success");   
-    const error = req.flash("error");    
-    res.render("shop", { products, success, error });
+    try {
+        let products = await productModel.find();
+
+        if(req.query.sortby === "lowtohigh"){
+            products = products.sort((a, b) => a.price - b.price);
+        } else if(req.query.sortby === "hightolow"){
+            products = products.sort((a, b) => b.price - a.price);
+        }
+
+        if(req.query.filter === "newcollection"){
+            products = products.sort((a, b) => b._id - a._id).slice(0, 4);
+        }else if(req.query.filter === "discounted"){
+            products = products.filter(product => product.discount > 0);
+        }
+
+        const success = req.flash("success");   
+        const error = req.flash("error");    
+        res.render("shop", { products, success, error });
+    } catch (error) {
+        console.log(error.message);
+        res.redirect('/');
+    }
 });
 
 router.get("/addtocart/:productid", isLoggedIn, async(req, res) => {
