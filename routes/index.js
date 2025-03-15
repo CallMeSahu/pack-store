@@ -4,7 +4,8 @@ const isLoggedIn = require("../middlewares/isLoggedIn");
 const productModel = require('../models/product-model');
 const userModel = require('../models/user-model');
 const { default: mongoose } = require('mongoose');
-const isOwner = require('../middlewares/isOwner');
+const razorpay = require("../config/razorpay-config");
+const crypto = require('crypto');
 
 router.get("/", (req, res) => {
     const error = req.flash("error");
@@ -116,6 +117,53 @@ router.get("/orders", isLoggedIn, async(req, res) => {
 router.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
+});
+
+router.post("/create-order", isLoggedIn, async (req, res) => {
+    try {
+        const { totalAmount } = req.body;
+
+        const order = await razorpay.orders.create({
+            amount: totalAmount * 100,
+            currency: "INR",
+            receipt: `order_rcptid_${Date.now()}`
+        })        
+        res.json(order);
+
+    } catch (error) {
+        console.log(error.message);
+        res.send("Error creating order");
+    }
+});
+
+router.post("/verify-payment", isLoggedIn, async(req, res) => {
+    try {
+        const { razorpay_order_id, razorpay_payment_id, razorpay_signature, cartItems, totalAmount } = req.body;
+
+        const generatedSignature = crypto
+            .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
+            .update(razorpay_order_id + "|" + razorpay_payment_id)
+            .digest("hex");
+
+        if(generatedSignature !== razorpay_signature){
+            req.flash("error", "Payment verification failed!");
+            return res.redirect("/cart");
+        }
+
+        const existingUser = await userModel.findOne({ email: req.user.email });
+        existingUser.orders.push({ cartItems, totalAmount, orderId: razorpay_order_id, paymentId: razorpay_payment_id });
+        existingUser.cart = [];
+        await existingUser.save();
+        res.json({ success: true, redirectUrl: "/order-confirm" });
+    } catch (error) {
+        console.log(error);
+        req.flash("error", "Payment failed");
+        res.redirect("/cart");
+    }
+});
+
+router.get("/order-confirm", isLoggedIn, (req, res) => {
+    res.render("order-confirm");
 });
 
 module.exports = router;

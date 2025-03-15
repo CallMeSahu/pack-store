@@ -14,10 +14,23 @@ const userSchema = new mongoose.Schema({
             ref: "product"
         }
     ],
-    orders: {
-        type: Array,
-        default: []
-    },
+    orders: [
+        {
+            cartItems: [
+                {
+                    type: mongoose.Schema.Types.ObjectId,
+                    ref: "product"
+                }
+            ],
+            totalAmount: Number,
+            orderId: String,
+            paymentId: String,
+            orderDate: {
+                type: Date,
+                default: Date.now
+            }
+        }
+    ],
     contact: {
         type: String,
         default: null,
@@ -31,7 +44,7 @@ const userSchema = new mongoose.Schema({
         addressLine2: { type: String, default: null },
         city: { type: String, default: null },
         state: { type: String, default: null },
-        pincode: { type: String, default: null,}
+        pincode: { type: String, default: null, }
     }
 });
 

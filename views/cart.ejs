@@ -69,13 +69,13 @@
                 <h3 class="w-1/3 text-xl">Total Amount</h3>
                 <h3 class="font-semibold text-xl text-green-600">₹ <%= totalAmount %> </h3>
             </div>
-            <form action="/" method="post" autocomplete="off">
-                <input 
-                    class="hidden" 
-                    type="number" name="totalAmount" value="<%= totalAmount%>" >
-                <input 
-                    class="w-full px-5 py-3 mt-2 rounded-full bg-blue-500 text-white cursor-pointer"
-                    type="submit" value="Place My Order">
+            <form id="checkout-form">
+                <input type="hidden" id="totalAmount" value="<%= totalAmount %>">
+                <input type="hidden" id="cartItems" value='<%= JSON.stringify(cartItems) %>'>
+                <button type="button" class="w-full px-5 py-3 mt-2 rounded-full bg-blue-500 text-white cursor-pointer"
+                    onclick="startPayment()">
+                    Place My Order
+                </button>
             </form>
         </div>
     <% } else{ %>
@@ -83,5 +83,65 @@
     <% } %>
     
 </div>
-    
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+        async function startPayment() {
+            const totalAmount = document.getElementById("totalAmount").value;
+            const cartItems = JSON.parse(document.getElementById("cartItems").value);
+
+            try {
+                const response = await fetch("/create-order", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ totalAmount })
+                });
+
+                const orderData = await response.json();
+
+                const options = {
+                    key: "<%= process.env.RAZORPAY_KEY_ID %>",
+                    amount: orderData.amount,
+                    currency: orderData.currency,
+                    name: "Packè Store",
+                    description: "Order Payment",
+                    order_id: orderData.id,
+                    handler: async function (response) {
+                        try {
+                            const verifyResponse = await fetch("/verify-payment", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({
+                                    razorpay_order_id: response.razorpay_order_id,
+                                    razorpay_payment_id: response.razorpay_payment_id,
+                                    razorpay_signature: response.razorpay_signature,
+                                    cartItems,
+                                    totalAmount
+                                })
+                            });
+
+                            const result = await verifyResponse.json();
+
+                            if (result.success) {
+                                window.location.href = "/order-confirm";  // Redirect on success
+                            } else {
+                                alert("Payment verification failed! Redirecting to cart.");
+                                window.location.href = "/cart"; // Redirect back to cart on failure
+                            }
+                        } catch (error) {
+                            console.error("Error verifying payment:", error);
+                            alert("Payment verification error! Redirecting to cart.");
+                            window.location.href = "/cart";
+                        }
+                    },
+                    theme: { color: "#2b7fff" }
+                };
+
+                const rzp = new Razorpay(options);
+                rzp.open();
+            } catch (error) {
+                console.log(error);
+                alert("Error processing payment");
+            }
+        }
+    </script>
 <%- include('./partials/footer') %>

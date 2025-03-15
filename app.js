@@ -11,10 +11,10 @@ const ownerRouter = require("./routes/ownerRouter");
 const userRouter = require("./routes/userRouter");
 const productRouter = require("./routes/productRouter");
 const indexRouter = require("./routes/index");
-require('dotenv').config();
+require("dotenv").config();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true}));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.set("view engine", "ejs");
