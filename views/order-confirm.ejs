@@ -6,4 +6,17 @@
     <a href="/orders" class="mt-5 px-5 py-2 bg-blue-500 text-white rounded-md">View Orders</a>
 </div>
 
+<script type="module">
+    import JSConfetti from 'https://cdn.jsdelivr.net/npm/js-confetti@latest/+esm';
+
+    document.addEventListener("DOMContentLoaded", async function() {
+        const jsConfetti = new JSConfetti();
+
+        for (let i = 0; i < 5; i++) {
+            jsConfetti.addConfetti();
+            await new Promise(resolve => setTimeout(resolve, 1500)); 
+        }
+    });
+</script>
+
 <%- include('./partials/footer') %>

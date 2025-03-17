@@ -155,6 +155,7 @@ router.post("/verify-payment", isLoggedIn, async(req, res) => {
         existingUser.cart = [];
         await existingUser.save();
         res.json({ success: true, redirectUrl: "/order-confirm" });
+        
     } catch (error) {
         console.log(error);
         req.flash("error", "Payment failed");
