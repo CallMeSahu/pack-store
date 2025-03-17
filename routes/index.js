@@ -128,6 +128,26 @@ router.get("/orders", isLoggedIn, async (req, res) => {
     }
 });
 
+router.get("/deletefromorder/:orderId", isLoggedIn, async (req, res) => {
+    try {
+        const orderId = req.params.orderId;
+        const user = await userModel.findOne({ email: req.user.email });
+
+        if(!user){
+            req.flash("error", "User not found");
+            return res.redirect("/orders");
+        }
+
+        user.orders = user.orders.filter(order => order._id.toString() !== orderId);
+        await user.save();
+        req.flash("success", "Order deleted!");
+        return res.redirect("/orders");
+
+    } catch (error) {
+        res.send(error.message);
+    }
+})
+
 router.get("/logout", (req, res) => {
     res.clearCookie("token");
     res.redirect("/");
