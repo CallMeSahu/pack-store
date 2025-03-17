@@ -110,8 +110,22 @@ router.get("/address", isLoggedIn, async(req, res) => {
     }
 });
 
-router.get("/orders", isLoggedIn, async(req, res) => {
-    res.send("Orders");
+router.get("/orders", isLoggedIn, async (req, res) => {
+    try {
+        const user = await userModel.findOne({ email: req.user.email }).populate("orders.cartItems"); 
+
+        if (!user) {
+            req.flash("error", "User not found");
+            return res.redirect("/");
+        }
+        
+        const success = req.flash("success");
+        const error = req.flash("error");
+        res.render("orders", { success, error, orders: user.orders });
+
+    } catch (err) {
+        res.send(err.message);
+    }
 });
 
 router.get("/logout", (req, res) => {
