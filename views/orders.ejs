@@ -25,43 +25,47 @@
         </div>
     </div>
     <main class="w-3/4 h-screen">
-        <h2 class="text-3xl mb-5">My Orders</h2>
-        <% orders.reverse().forEach(order => { %>
-            <div class="w-9/10 shadow-xl p-5 rounded-xl mb-5">
-                <div class="flex justify-between items-center w-full mb-3">
-                    <div>
-                        <p><%= new Date(order.orderDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) %></p>
+        <% if(orders.length > 0){ %>
+            <h2 class="text-3xl mb-5">My Orders</h2>
+            <% orders.reverse().forEach(order => { %>
+                <div class="w-9/10 shadow-xl p-5 rounded-xl mb-5">
+                    <div class="flex justify-between items-center w-full mb-3">
+                        <div>
+                            <p><%= new Date(order.orderDate).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) %></p>
+                        </div>
+                        <div>
+                            <p class="text-xl">Total: ₹<%= order.totalAmount  %></p> 
+                        </div>
                     </div>
-                    <div>
-                        <p class="text-xl">Total: ₹<%= order.totalAmount  %></p> 
-                    </div>
-                </div>
-                <ul class="flex gap-3 flex-wrap">
-                    <% order.cartItems.forEach(item => { 
-                        let discountedPrice = item.price - item.discount;
-                    %>                            
-                        <li class="w-60">
-                            <div class="w-full h-52 flex items-center justify-center bg-[<%= item.bgcolor %>]">
-                                <img 
-                                    class="w-auto h-[75%] object-contain"
-                                    src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="">
-                            </div>
-                            <div class="p-4 flex justify-between items-center bg-[<%= item.panelcolor %>] text-[<%= item.textcolor %>]">
-                                <div>
-                                    <h3 class="font-semibold"><%= item.name %></h3>
-                                    <h4 class="font-normal">₹<%= discountedPrice %></h4>
+                    <ul class="flex gap-3 flex-wrap">
+                        <% order.cartItems.forEach(item => { 
+                            let discountedPrice = item.price - item.discount;
+                        %>                            
+                            <li class="w-60">
+                                <div class="w-full h-52 flex items-center justify-center bg-[<%= item.bgcolor %>]">
+                                    <img 
+                                        class="w-auto h-[75%] object-contain"
+                                        src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="">
                                 </div>
-                            </div>
-                        </li>
-                    <% }) %>
-                </ul>
-                <div class="flex justify-end">
-                    <a class="w-9 h-9 flex justify-center items-center rounded-full bg-zinc-200" href="/deletefromorder/<%= order._id %>">
-                        <i class="ri-delete-bin-line text-black text-xl"></i>
-                    </a>
+                                <div class="p-4 flex justify-between items-center bg-[<%= item.panelcolor %>] text-[<%= item.textcolor %>]">
+                                    <div>
+                                        <h3 class="font-semibold"><%= item.name %></h3>
+                                        <h4 class="font-normal">₹<%= discountedPrice %></h4>
+                                    </div>
+                                </div>
+                            </li>
+                        <% }) %>
+                    </ul>
+                    <div class="flex justify-end">
+                        <a class="w-9 h-9 flex justify-center items-center rounded-full bg-zinc-200" href="/deletefromorder/<%= order._id %>">
+                            <i class="ri-delete-bin-line text-black text-xl"></i>
+                        </a>
+                    </div>
                 </div>
-            </div>
-        <% }) %>
+            <% }) %>
+        <% } else{ %>
+            <h3 class="w-full text-center text-2xl mt-10">No Orders Placed Yet!</h3>
+        <% } %>
     </main>
 </div>
 
