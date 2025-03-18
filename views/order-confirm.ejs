@@ -1,8 +1,41 @@
 <%- include('./partials/header') %>
 
-<div class="w-full h-screen flex flex-col items-center justify-center">
+<% if(error.length > 0){ %>
+    <div class="absolute top-10 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
+        <span class="inline-block mt-1 mb-1 text-white">
+            <%= error %>
+        </span>
+    </div>
+<% } %>
+
+<div class="w-full min-h-screen flex flex-col items-center justify-center p-5">
     <h1 class="text-3xl text-green-600">Payment Successful!</h1>
     <p class="text-xl mt-2">Your order has been placed successfully.</p>
+    <div class="w-fit max-w-3/4 shadow-xl p-5 rounded-xl mb-5">
+        <div class="mb-2">
+            <p>Order ID: <%=order.orderId %></p>
+            <p>Payment ID: <%=order.paymentId %></p>
+        </div>
+        <ul class="flex gap-3 flex-wrap">
+            <% order.cartItems.forEach(item => { 
+                let discountedPrice = item.price - item.discount;
+            %>                            
+                <li class="w-60">
+                    <div class="w-full h-52 flex items-center justify-center bg-[<%= item.bgcolor %>]">
+                        <img 
+                            class="w-auto h-[75%] object-contain"
+                            src="data:image/jpeg;base64,<%= item.image.toString('base64') %>" alt="">
+                    </div>
+                    <div class="p-4 flex justify-between items-center bg-[<%= item.panelcolor %>] text-[<%= item.textcolor %>]">
+                        <div>
+                            <h3 class="font-semibold"><%= item.name %></h3>
+                            <h4 class="font-normal">₹<%= discountedPrice %></h4>
+                        </div>
+                    </div>
+                </li>
+            <% }) %>
+        </ul>
+    </div>
     <a href="/orders" class="mt-5 px-5 py-2 bg-blue-500 text-white rounded-md">View Orders</a>
 </div>
 

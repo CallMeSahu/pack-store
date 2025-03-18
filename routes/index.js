@@ -197,8 +197,21 @@ router.post("/verify-payment", isLoggedIn, async(req, res) => {
     }
 });
 
-router.get("/order-confirm", isLoggedIn, (req, res) => {
-    res.render("order-confirm");
+router.get("/order-confirm", isLoggedIn, async(req, res) => {
+    try {
+        const user = await userModel.findOne({ email: req.user.email }).populate("orders.cartItems");
+
+        if(!user || user.orders.length === 0){
+            res.flash("error", "No orders found!");
+        }
+
+        const lastOrder = user.orders[user.orders.length - 1];
+        const error = req.flash("error");
+
+        res.render("order-confirm", { error, order: lastOrder });
+    } catch (error) {
+        res.send(error.message);
+    }
 });
 
 module.exports = router;
